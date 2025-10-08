@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>All Works</h2>
+<a href="{% url 'work_create' %}" class="btn btn-success mb-3">Add Work</a>
+<a href="{% url 'export_pdf' %}" class="btn btn-primary mb-3">Export PDF</a>
+<table id="worksTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Work Name</th>
+            <th>Work Order No</th>
+            <th>Work Order Date</th>
+            <th>Tender Amount</th>
+            <th>EMD Amount</th>
+            <th>SD Amount</th>
+            <th>Add SD Amount</th>
+            <th>Bills</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for work in works %}
+        <tr>
+            <td>{{ work.work_name }}</td>
+            <td>{{ work.work_order_no }}</td>
+            <td>{{ work.work_order_date }}</td>
+            <td>{{ work.tender_amount }}</td>
+            <td>{{ work.emd_amount }}</td>
+            <td>{{ work.sd_amount }}</td>
+            <td>{{ work.add_sd_amount }}</td>
+            <td>
+                <ul>
+                    {% for bill in work.bills.all %}
+                    <li>{{ bill.bill_no }} - {{ bill.total_amount }} - <a href="{% url 'bill_create' work.id %}">Edit/Add</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+{% block scripts %}
+<script>
+$(document).ready(function () {
+    $('#worksTable').DataTable({
+        "scrollX": true
+    });
+});
+</script>
+{% endblock %}

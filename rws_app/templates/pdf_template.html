@@ -1,0 +1,31 @@
+<h2>RWS Works Report</h2>
+<table border="1" width="100%" cellspacing="0" cellpadding="5">
+<tr>
+    <th>Work Name</th>
+    <th>Work Order No</th>
+    <th>Work Order Date</th>
+    <th>Tender Amount</th>
+    <th>EMD</th>
+    <th>SD</th>
+    <th>Add SD</th>
+    <th>Bills</th>
+</tr>
+{% for work in works %}
+<tr>
+    <td>{{ work.work_name }}</td>
+    <td>{{ work.work_order_no }}</td>
+    <td>{{ work.work_order_date }}</td>
+    <td>{{ work.tender_amount }}</td>
+    <td>{{ work.emd_amount }}</td>
+    <td>{{ work.sd_amount }}</td>
+    <td>{{ work.add_sd_amount }}</td>
+    <td>
+        <ul>
+            {% for bill in work.bills.all %}
+            <li>{{ bill.bill_no }} - {{ bill.total_amount }} - {{ bill.bill_date }}</li>
+            {% endfor %}
+        </ul>
+    </td>
+</tr>
+{% endfor %}
+</table>

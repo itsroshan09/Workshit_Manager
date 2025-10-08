@@ -1,0 +1,74 @@
+<!-- templates/rws_app/index.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 no-print">
+    <h1 class="h3">Works Dashboard</h1>
+    <button class="btn btn-secondary" onclick="window.print()">
+        <i class="bi bi-printer-fill me-2"></i>Export All to PDF
+    </button>
+</div>
+
+<div class="accordion" id="worksAccordion">
+    {% for work in works %}
+    <div class="accordion-item mb-3">
+        <h2 class="accordion-header" id="heading-{{ work.id }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ work.id }}" aria-expanded="false" aria-controls="collapse-{{ work.id }}">
+                <div class="w-100 d-flex justify-content-between align-items-center pe-2">
+                    <span class="fw-bold fs-5">{{ work.name }}</span>
+                    <span class="badge bg-secondary rounded-pill">Tender: ₹{{ work.tender_amount|floatformat:2 }}</span>
+                </div>
+            </button>
+        </h2>
+        <div id="collapse-{{ work.id }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ work.id }}" data-bs-parent="#worksAccordion">
+            <div class="accordion-body">
+                <!-- Work Details -->
+                <div class="p-3 mb-3 bg-light rounded">
+                    <p class="mb-1"><strong>Order Details:</strong> {{ work.order_details }}</p>
+                    <p class="mb-1"><strong>EMD:</strong> ₹{{ work.emd_amount|floatformat:2 }}</p>
+                    <p class="mb-1"><strong>Work Order SD:</strong> ₹{{ work.work_order_sd|floatformat:2 }} | <strong>Add. SD:</strong> ₹{{ work.add_sd|floatformat:2 }}</p>
+                </div>
+
+                <!-- Bills Table -->
+                <h5 class="mt-4">Bills</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Bill No.</th>
+                                <th>Date</th>
+                                <th class="text-end">Total Bill</th>
+                                <th class="text-end">Total Deductions</th>
+                                <th class="text-end">Cheque Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bill in work.bills.all %}
+                            <tr>
+                                <td>{{ bill.bill_no }}</td>
+                                <td>{{ bill.bill_date|date:"d-M-Y" }}</td>
+                                <td class="text-end">₹{{ bill.total_bill_amount|floatformat:2 }}</td>
+                                <td class="text-end text-danger">₹{{ bill.deduction_total|floatformat:2 }}</td>
+                                <td class="text-end text-success fw-bold">₹{{ bill.cheque_amount|floatformat:2 }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="5" class="text-center text-muted">No bills added yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-end mt-2 no-print">
+                    <a href="{% url 'add_bill' work.id %}" class="btn btn-success btn-sm"><i class="bi bi-plus-circle-fill me-1"></i>Add Bill</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="text-center p-5 card">
+        <h4>No Works Found</h4>
+        <p>Click the blue '+' button to add your first work project.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
