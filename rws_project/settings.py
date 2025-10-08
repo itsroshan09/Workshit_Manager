@@ -7,12 +7,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-a-very-secret-key-that-you-should-change'
 DEBUG = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'roshanpatil.pythonanywhere.com'
+]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-    
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,7 +29,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware'
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,13 +58,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rws_project.wsgi.application'
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'roshanpatil$Worksheet', # <-- REPLACE THIS
+        'USER': 'roshanpatil',                   # <-- REPLACE THIS
+        'PASSWORD': 'Mmit@3619',      # <-- REPLACE THIS
+        'HOST': 'roshanpatil.mysql.pythonanywhere-services.com', # <-- REPLACE THIS
     }
 }
-
 AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},{'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},{'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},{'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}]
 
 LANGUAGE_CODE = 'en-us'
